@@ -6,7 +6,7 @@ FROM amazonlinux:2023
 # CL_IMPLEMENTATION="sbcl-bin/MAJOR.MINOR.PATCH" for specific version, or
 # CL_IMPLEMENTATION="sbcl-bin" for current latest version
 #
-ARG CL_IMPLEMENTATION="sbcl-bin/2.5.5"
+ARG CL_IMPLEMENTATION="sbcl-bin"
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8

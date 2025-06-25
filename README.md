@@ -20,15 +20,15 @@ Roswell dependencies for *building* Common Lisp implementations.
 The project was inspired by
 <https://github.com/y2q-actionman/cl-aws-custom-runtime-test>.
 
-## Building the image with `build-image.sh`
+## Building the image with `build-al2023-lisp-oci-image.sh`
 
-`build-image.sh` is a thin wrapper around `docker build` that supplies sensible
-defaults and a few convenience flags.
+`build-al2023-lisp-oci-image.sh` is a thin wrapper around `docker
+build` that supplies sensible defaults and a few convenience flags.
 
 ### Basic usage
 
 ```
-./build-image.sh --impl sbcl-bin
+./build-al2023-lisp-oci-image.sh --impl sbcl-bin
 ```
 
 • Builds the image with the latest *binary* SBCL available via Roswell.
@@ -38,11 +38,11 @@ defaults and a few convenience flags.
 ### Selecting an implementation (and version)
 
 ```
-./build-image.sh --impl sbcl-bin/2.3.7   # specific SBCL binary release
-./build-image.sh --impl sbcl-bin         # latest SBCL binary release
-./build-image.sh --impl sbcl             # compile SBCL from source
-./build-image.sh --impl ecl/24.5.10      # specific ECL version
-./build-image.sh --impl ccl-bin          # latest Clozure CL release
+./build-al2023-lisp-oci-image.sh --impl sbcl-bin/2.3.7 # specific SBCL binary release
+./build-al2023-lisp-oci-image.sh --impl sbcl-bin       # latest SBCL binary release
+./build-al2023-lisp-oci-image.sh --impl sbcl           # compile SBCL from source
+./build-al2023-lisp-oci-image.sh --impl ecl/24.5.10    # specific ECL version
+./build-al2023-lisp-oci-image.sh --impl ccl-bin        # latest Clozure CL release
 ```
 
 • A value ending in `-bin` tells Roswell to **download a pre-built binary**.
@@ -52,19 +52,19 @@ defaults and a few convenience flags.
 ### Customising image name and tag
 
 ```
-./build-image.sh -n my-lisp -t v1.0 --impl sbcl-bin
+./build-al2023-lisp-oci-image.sh -n my-lisp -t v1.0 --impl sbcl-bin
 ```
 
 (If `-t/--tag` is omitted, the script auto-tags the image based on the
 implementation and version.)
 
-### Disabling BuildKit
+### Enabling BuildKit
 
-BuildKit is enabled by default for speed and smaller layers. Disable it when
-working with older Docker releases:
+BuildKit is disabled by default because not every system has it. For
+those that do, you can enable it for speed and smaller layers:
 
 ```
-DOCKER_BUILDKIT=0 ./build-image.sh --impl sbcl-bin
+DOCKER_BUILDKIT=1 ./build-al2023-lisp-oci-image.sh --impl sbcl-bin
 ```
 
 ### Passing extra arguments to `docker build`
@@ -72,10 +72,12 @@ DOCKER_BUILDKIT=0 ./build-image.sh --impl sbcl-bin
 Anything after a literal `--` is forwarded verbatim:
 
 ```
-./build-image.sh --impl sbcl-bin -- --no-cache
+./build-al2023-lisp-oci-image.sh --impl sbcl-bin -- --no-cache
 ```
 
 ### Verifying the image
+
+Replace the image tag appropriately and execute:
 
 ```
 docker run --rm cl-amazon-linux:sbcl-bin-2.5.5 \
